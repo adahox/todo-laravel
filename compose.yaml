@@ -25,6 +25,7 @@ services:
             - mysql
             - redis
             - rabbitmq
+            - mailpit
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -89,6 +90,13 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+    mailpit:
+        image: axllent/mailpit:latest
+        ports:
+            - "8025:8025"
+            - "1025:1025"
+        networks:
+            - todonetwork
 networks:
     todonetwork:
         driver: bridge

@@ -17,7 +17,7 @@ class AuthResource extends JsonResource
     {
         return [
             'status' => 'success',
-            'message' => 'User Logged successfully',
+            'message' => '',
             'user' => new UserResource(auth()->user()),
             'authorization' => [
                 'token' => auth()->tokenById(auth()->user()->id),
