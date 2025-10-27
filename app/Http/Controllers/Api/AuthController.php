@@ -6,14 +6,15 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\AuthResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Jobs\CadastroRealizado;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request): JsonResource
     {
         ['email' => $email, 'password' => $password] = $request->validated();
 
@@ -21,23 +22,17 @@ class AuthController extends Controller
             return response()->error('Credenciais inválidas', 401);
         }
 
-
-        return response()->success(
-            new AuthResource([])
-        );
+        return new UserResource(auth()->user());
     }
 
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request): JsonResource
     {
         $user = User::create($request->validated());
-        
+
         auth()->login($user);
 
-        #CadastroRealizado::dispatch($user);
         CadastroRealizado::dispatch($user)->onQueue('emails');
 
-        return response()->success(
-            new AuthResource([])
-        );
+        return new UserResource($user);
     }
 }

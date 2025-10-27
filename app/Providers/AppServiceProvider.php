@@ -23,26 +23,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Response::macro('success', function ($payload = [], $status = 200) {
-            // Se for uma classe de resposta customizada
-            if (is_string($payload) && class_exists($payload)) {
-                $instance = app($payload);
-                return $instance instanceof Arrayable
-                    ? response()->json($instance->toArray(), $status)
-                    : response()->json(['status' => 'success'], $status);
-            }
+        // Response::macro('success', function ($payload = [], $status = 200) {
+        //     // Se for uma classe de resposta customizada
+        //     if (is_string($payload) && class_exists($payload)) {
+        //         $instance = app($payload);
+        //         return $instance instanceof Arrayable
+        //             ? response()->json($instance->toArray(), $status)
+        //             : response()->json(['status' => 'success'], $status);
+        //     }
 
-            // Se for uma instância já criada
-            if (is_object($payload) && method_exists($payload, 'toArray')) {
-                return response()->json($payload->toArray(), $status);
-            }
+        //     // Se for uma instância já criada
+        //     if (is_object($payload) && method_exists($payload, 'toArray')) {
+        //         return response()->json($payload->toArray(), $status);
+        //     }
 
-            // Caso padrão
-            return response()->json([
-                'status' => 'success',
-                'data' => $payload,
-            ], $status);
-        });
+        //     // Caso padrão
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'data' => $payload,
+        //     ], $status);
+        // });
 
         Response::macro('error', function ($message, $status = 400, $extra = []) {
             return response()->json([
