@@ -11,7 +11,7 @@ class UpdateTodoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class UpdateTodoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'item' => 'required|max:50'
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'item.required' => 'O item do seu todo não pode ser vazio.',
+            'item.max' => 'O item do seu todo deve conter no máximo 50 caracteres.',
         ];
     }
 }

@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\Attributes\WithoutRelations;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -18,9 +17,7 @@ class CadastroRealizado implements ShouldQueue
      */
     public function __construct(
         public User $user
-    ) {
-        Log::debug($user);
-    }
+    ) { }
 
     /**
      * Execute the job.
