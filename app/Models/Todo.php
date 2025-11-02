@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Todo extends Model
 {
-    protected $fillable = ['item'];
+    protected $guarded = ['user_id'];
+    
+    protected $fillable = [
+        'item',
+        'user_id'
+    ];
     
 }

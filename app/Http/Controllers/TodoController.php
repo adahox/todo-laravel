@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Todo;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
-use App\Http\Resources\TodoColletion;
-use App\Models\Todo;
-use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Gate;
 
 class TodoController extends Controller
 {
@@ -17,7 +17,10 @@ class TodoController extends Controller
      */
     public function index(): ResourceCollection
     {
-        return Todo::paginate()->toResourceCollection();
+        return Todo::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate()
+            ->toResourceCollection();
     }
 
     /**
@@ -25,7 +28,14 @@ class TodoController extends Controller
      */
     public function store(StoreTodoRequest $request): JsonResource
     {
-        $todo = Todo::create($request->only('item'));
+        Gate::authorize('create', Todo::class);
+
+        $todoItem = [
+            'item' => $request->item,
+            'user_id' => $request->user()->id
+        ];
+
+        $todo = Todo::create($todoItem);
 
         return $todo->toResource();
     }
@@ -35,6 +45,8 @@ class TodoController extends Controller
      */
     public function show(Todo $todo): JsonResource
     {
+        Gate::authorize('view', $todo);
+
         return $todo->toResource();
     }
 
@@ -43,6 +55,8 @@ class TodoController extends Controller
      */
     public function update(UpdateTodoRequest $request, Todo $todo)
     {
+       Gate::authorize('update', $todo);
+
         $todo->update($request->only('item'));
 
         return $todo->toResource();
@@ -53,6 +67,8 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo)
     {
+        Gate::authorize('delete', $todo);
+
         return $todo->deleteOrFail();
     }
 }

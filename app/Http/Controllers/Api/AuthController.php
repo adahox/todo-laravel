@@ -35,4 +35,11 @@ class AuthController extends Controller
         
         return auth()->user()->toResource(AuthResource::class);
     }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logout realizado com sucesso']);
+    }
 }

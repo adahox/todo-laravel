@@ -20,7 +20,7 @@ class TodoCollection extends ResourceCollection
 
     public function paginationInformation($request, $paginated, $default)
     {
-        $default['links']['custom'] = 'https://olharacessivel.com';
+        $default['links']['enviroment'] = 'Olhar Acessivel';
 
         return $default;
     }

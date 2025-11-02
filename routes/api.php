@@ -3,11 +3,25 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
-Route::controller(AuthController::class)->group(function () {
-    Route::post('login', 'login')->name('login');
-    Route::post('register', 'register')->name('register');
-    Route::post('logout', 'logout')->name('logout');
+
+Route::get('/', function () {
+    return response()->json([
+        'all right'
+    ], 200);
 });
 
-Route::resource('todo', TodoController::class);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+});
+
+Route::resource('todo', TodoController::class)->missing(function (Request $request) {
+    return response()->error('Not Found.', 404);
+})->middleware(['auth:sanctum']);

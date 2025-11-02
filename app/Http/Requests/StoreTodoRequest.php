@@ -33,4 +33,5 @@ class StoreTodoRequest extends FormRequest
             'item.max' => 'O item do seu todo deve conter no máximo 50 caracteres.',
         ];
     }
+
 }
