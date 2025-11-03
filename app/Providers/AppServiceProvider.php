@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Queue\QueueServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,7 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
         # macro error on response
         Response::macro('error', function ($message, $status = 400, $extra = []) {
             return response()->json([

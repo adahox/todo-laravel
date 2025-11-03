@@ -7,6 +7,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class AuthResource extends JsonResource
 {
+
+    protected ?string $token = null;
+
+    public function __construct($resource, $token = null)
+    {
+        parent::__construct($resource);
+        $this->token = $token;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -14,16 +23,12 @@ class AuthResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
-        $token = $request->user()->createToken( 'auth_login', ['*'], now()->addMinutes(30) );
-
         return [
             "id" => $this->id,
             "name" => $this->name,
             "email" => $this->email,
-            'authorization' =>  [
-                'token' => $token->plainTextToken,
-                'expiration' => $token->accessToken->expires_at,
+            'authorization' => [
+                'token' => $this->when($this->token, $this->token)
             ]
         ];
     }

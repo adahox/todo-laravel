@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\TodoController;
+use App\Http\Controllers\Api\TodoController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 

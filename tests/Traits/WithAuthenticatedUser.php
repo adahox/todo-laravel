@@ -9,11 +9,10 @@ trait WithAuthenticatedUser
 {
 
     protected $authenticatedUser;
-    protected $password = 'password';
+    private $password = 'password';
 
     public function authenticate()
     {
-
         $this->authenticatedUser = User::factory()->hasTodo(1)->create([
             'password' => $this->password
         ]);

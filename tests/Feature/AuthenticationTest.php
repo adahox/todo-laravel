@@ -3,10 +3,11 @@
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Traits\WithGuestUser;
 
 class AuthenticationTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithGuestUser;
 
     public function test_authentication_returns_successful_for_correct_credentials()
     {
@@ -39,4 +40,5 @@ class AuthenticationTest extends TestCase
         ]);
         $response->assertStatus(401);
     }
+
 }
