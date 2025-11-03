@@ -25,7 +25,7 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(200);
     }
 
-        public function test_authentication_returns_error_for_incorrect_credentials()
+    public function test_authentication_returns_error_for_incorrect_credentials()
     {
         $password = 'Testing123!;';
 
@@ -33,12 +33,10 @@ class AuthenticationTest extends TestCase
             'password' => bcrypt($password)
         ]);
 
-        $response = $this->actingAs($user)
-            ->post('api/login', [
-                'email' => $user->email,
-                'password' => 'wrong_password'
-            ]);
-
+        $response = $this->post('api/login', [
+            'email' => $user->email,
+            'password' => 'wrong_password'
+        ]);
         $response->assertStatus(401);
     }
 }
